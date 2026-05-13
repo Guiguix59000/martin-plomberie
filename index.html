@@ -560,25 +560,51 @@ function initModal() {
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  document.getElementById('contact-form').addEventListener('submit', e => {
+  document.getElementById('contact-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
+    const form = e.target;
+    const btn  = form.querySelector('.form-submit');
+
     btn.textContent = 'Envoi en cours…';
     btn.disabled = true;
 
-    // TODO : remplacez ce setTimeout par un vrai appel fetch vers votre API ou Formspree.
-    setTimeout(() => {
-      document.getElementById('form-container').innerHTML = `
-        <div class="form-success">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          <h3>Demande envoyée !</h3>
-          <p>Nous vous recontacterons dans les 24h.</p>
-        </div>
-      `;
-    }, 900);
+    try {
+      const res = await fetch(`https://formspree.io/f/${CONFIG.formspreeId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          Prénom:     form.prenom.value,
+          Nom:        form.nom.value,
+          Téléphone:  form.tel.value,
+          Email:      form.email.value,
+          Prestation: form.prestation.value,
+          Message:    form.message.value,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        document.getElementById('form-container').innerHTML = `
+          <div class="form-success">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <h3>Demande envoyée !</h3>
+            <p>Nous vous recontacterons dans les 24h.</p>
+          </div>
+        `;
+      } else {
+        throw new Error('Formspree error');
+      }
+    } catch {
+      btn.textContent = 'Envoyer ma demande';
+      btn.disabled = false;
+      btn.insertAdjacentHTML('afterend',
+        '<p style="color:#c0392b;font-size:13px;margin-top:10px">Une erreur est survenue. Veuillez réessayer ou nous appeler directement.</p>'
+      );
+    }
   });
 }
 

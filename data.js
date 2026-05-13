@@ -14,6 +14,14 @@ const CONFIG = {
     email: 'contact@martin-plomberie.fr',
   },
 
+  // ──────────────────────────────────────────────────────────
+  // FORMSPREE — pour activer l'envoi d'email :
+  //   1. Créez un compte sur https://formspree.io
+  //   2. Créez un nouveau formulaire et renseignez l'email du client
+  //   3. Copiez l'ID du formulaire (ex: "xyzabc12") ci-dessous
+  // ──────────────────────────────────────────────────────────
+  formspreeId: 'VOTRE_ID_ICI',
+
   hero: {
     titleLines: ['Plombier à', 'Saint-Étienne', '& alentours'],
     titleAccentIndex: 1,
