@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin Plomberie — Plombier à Saint-Étienne</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & base ──────────────────────────────────────────── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: #f5f3ee; color: #1a1a1a; }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  nav {
+    background: #1a2a3a; padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; position: sticky; top: 0; z-index: 200;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: #fff; letter-spacing: -0.5px; text-decoration: none; }
+  .nav-logo span { color: #e8a735; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+  .nav-cta { background: #e8a735; color: #1a2a3a; padding: 10px 22px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; font-family: 'Syne', sans-serif; cursor: pointer; border: none; }
+
+  /* Hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.3s, opacity 0.3s; display: block; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── Hero ──────────────────────────────────────────────────── */
+  .hero { background: #1a2a3a; padding: 80px 40px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; min-height: 460px; overflow: hidden; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,167,53,0.15); border: 1px solid rgba(232,167,53,0.35); color: #e8a735; font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 2px; margin-bottom: 24px; letter-spacing: 0.8px; text-transform: uppercase; }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: #e8a735; border-radius: 50%; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: 52px; font-weight: 800; color: #fff; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+  .hero h1 em { color: #e8a735; font-style: normal; }
+  .hero-sub { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.7; max-width: 420px; margin-bottom: 36px; font-weight: 300; }
+  .hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .btn-primary { background: #e8a735; color: #1a2a3a; padding: 14px 28px; border-radius: 4px; font-weight: 600; font-size: 15px; text-decoration: none; font-family: 'Syne', sans-serif; cursor: pointer; border: none; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-ghost { color: rgba(255,255,255,0.75); font-size: 14px; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: color 0.2s; }
+  .btn-ghost::after { content: '→'; }
+  .btn-ghost:hover { color: #fff; }
+  .hero-visual { position: relative; align-self: end; }
+  .hero-img-placeholder { width: 100%; height: 340px; background: linear-gradient(135deg, #243a4e 0%, #1a2a3a 100%); border-radius: 8px 8px 0 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hero-stats { display: flex; gap: 0; }
+  .stat-item { flex: 1; background: rgba(255,255,255,0.05); border-top: 2px solid #e8a735; padding: 16px 20px; }
+  .stat-item:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.08); }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: #fff; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* ── Services ──────────────────────────────────────────────── */
+  .services { padding: 80px 40px; background: #f5f3ee; }
+  .section-label { font-size: 12px; font-weight: 500; color: #e8a735; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: #1a2a3a; letter-spacing: -1px; margin-bottom: 48px; max-width: 400px; line-height: 1.1; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .service-card { background: #fff; border-radius: 8px; padding: 32px 28px; border-left: 4px solid #1a2a3a; position: relative; overflow: hidden; }
+  .service-card::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: #f5f3ee; border-radius: 0 8px 0 100%; }
+  .service-icon { width: 48px; height: 48px; background: #1a2a3a; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .service-icon svg { width: 24px; height: 24px; stroke: #e8a735; fill: none; stroke-width: 1.8; }
+  .service-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: #1a2a3a; margin-bottom: 10px; }
+  .service-desc { font-size: 14px; color: #666; line-height: 1.65; font-weight: 300; }
+
+  /* ── Why ───────────────────────────────────────────────────── */
+  .why { background: #1a2a3a; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .why h2 { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 32px; }
+  .why h2 em { color: #e8a735; font-style: normal; }
+  .why-list { display: flex; flex-direction: column; gap: 20px; }
+  .why-item { display: flex; gap: 16px; align-items: flex-start; }
+  .why-check { width: 32px; height: 32px; min-width: 32px; background: rgba(232,167,53,0.15); border: 1px solid rgba(232,167,53,0.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .why-check svg { width: 16px; height: 16px; stroke: #e8a735; fill: none; stroke-width: 2.5; }
+  .why-text strong { display: block; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .why-text p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; font-weight: 300; }
+  .why-testimonial { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 36px; transition: opacity 0.4s ease; }
+  .why-testimonial.fading { opacity: 0; }
+  .stars { color: #e8a735; font-size: 18px; margin-bottom: 20px; letter-spacing: 2px; }
+  .testimonial-text { font-size: 17px; color: rgba(255,255,255,0.85); line-height: 1.7; font-style: italic; font-weight: 300; margin-bottom: 24px; }
+  .testimonial-author { display: flex; align-items: center; gap: 14px; }
+  .author-avatar { width: 44px; height: 44px; border-radius: 50%; background: #e8a735; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: #1a2a3a; flex-shrink: 0; }
+  .author-name { font-weight: 600; font-size: 14px; color: #fff; }
+  .author-loc { font-size: 12px; color: rgba(255,255,255,0.45); }
+  .testimonial-dots { display: flex; gap: 8px; margin-top: 24px; }
+  .t-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); border: none; cursor: pointer; transition: background 0.3s; padding: 0; }
+  .t-dot.active { background: #e8a735; }
+
+  /* ── Zone ──────────────────────────────────────────────────── */
+  .zone { padding: 80px 40px; background: #f5f3ee; }
+  .zone-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .zone-map { background: #e8e5de; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .map-pin { width: 40px; height: 40px; background: #1a2a3a; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; z-index: 1; }
+  .map-pin::after { content: ''; width: 16px; height: 16px; background: #e8a735; border-radius: 50%; transform: rotate(45deg); }
+  .zone-ripple { position: absolute; border: 2px solid rgba(26,42,58,0.2); border-radius: 50%; }
+  .zone-ripple:nth-child(1) { width: 160px; height: 160px; animation: ripple 2.5s ease-out infinite; }
+  .zone-ripple:nth-child(2) { width: 240px; height: 240px; border-color: rgba(26,42,58,0.1); animation: ripple 2.5s ease-out infinite 0.8s; }
+  @keyframes ripple { 0% { opacity: 1; transform: scale(0.85); } 100% { opacity: 0; transform: scale(1.1); } }
+  .zone-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .zone-tag { background: #fff; border: 1px solid #ddd; border-radius: 2px; padding: 6px 14px; font-size: 13px; color: #444; font-weight: 400; }
+
+  /* ── CTA ───────────────────────────────────────────────────── */
+  .cta { background: #e8a735; padding: 80px 40px; text-align: center; }
+  .cta h2 { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800; color: #1a2a3a; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .cta p { font-size: 16px; color: rgba(26,42,58,0.7); margin-bottom: 36px; font-weight: 300; }
+  .cta-btn { background: #1a2a3a; color: #fff; padding: 16px 36px; border-radius: 4px; font-weight: 700; font-size: 16px; text-decoration: none; font-family: 'Syne', sans-serif; display: inline-block; cursor: pointer; border: none; transition: opacity 0.2s; }
+  .cta-btn:hover { opacity: 0.88; }
+  .cta-tel { display: block; margin-top: 16px; font-size: 14px; color: rgba(26,42,58,0.6); }
+  .cta-tel a { color: inherit; }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  footer { background: #0f1c28; padding: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: #fff; }
+  .footer-logo span { color: #e8a735; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.75); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+  /* ── Reveal animations ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.55s ease var(--reveal-delay, 0s), transform 0.55s ease var(--reveal-delay, 0s);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-28px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.active, .reveal-left.active { opacity: 1; transform: none; }
+
+  /* ── Modal ─────────────────────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 10px; padding: 40px 36px;
+    max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
+    position: relative; animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; cursor: pointer; color: #aaa; font-size: 24px; line-height: 1; transition: color 0.2s; }
+  .modal-close:hover { color: #333; }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #1a2a3a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .modal-sub { font-size: 14px; color: #999; margin-bottom: 28px; }
+
+  /* ── Form ──────────────────────────────────────────────────── */
+  .form-group { margin-bottom: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-label { display: block; font-size: 11px; font-weight: 500; color: #666; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.6px; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; border: 1.5px solid #e0e0e0; border-radius: 4px;
+    padding: 10px 13px; font-size: 14px; font-family: 'DM Sans', sans-serif;
+    outline: none; transition: border-color 0.2s; background: #fafafa; color: #1a1a1a;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #1a2a3a; background: #fff; }
+  .form-textarea { resize: vertical; min-height: 88px; }
+  .form-select {
+    appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;
+  }
+  .form-submit {
+    background: #1a2a3a; color: #fff; border: none;
+    padding: 14px 28px; border-radius: 4px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+    cursor: pointer; width: 100%; margin-top: 8px; transition: background 0.2s, color 0.2s;
+  }
+  .form-submit:hover { background: #e8a735; color: #1a2a3a; }
+  .form-submit:disabled { opacity: 0.6; cursor: default; }
+
+  .form-success { text-align: center; padding: 16px 0; }
+  .form-success svg { width: 56px; height: 56px; stroke: #2e7d62; fill: none; stroke-width: 2; margin-bottom: 16px; }
+  .form-success h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: #1a2a3a; margin-bottom: 8px; }
+  .form-success p { font-size: 14px; color: #888; }
+
+  /* ── Mobile ────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links {
+      position: fixed; top: 64px; left: 0; right: 0;
+      background: #1a2a3a; flex-direction: column; gap: 0;
+      padding: 8px 0; display: none; z-index: 500;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 15px; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+
+    .hero { grid-template-columns: 1fr; padding: 52px 20px 40px; min-height: auto; gap: 0; }
+    .hero h1 { font-size: 36px; letter-spacing: -1.5px; }
+    .hero-visual { display: none; }
+
+    .services { padding: 60px 20px; }
+    .services-grid { grid-template-columns: 1fr; gap: 16px; }
+    .section-title { font-size: 28px; }
+
+    .why { grid-template-columns: 1fr; padding: 60px 20px; gap: 48px; }
+    .why h2 { font-size: 28px; }
+
+    .zone { padding: 60px 20px; }
+    .zone-inner { grid-template-columns: 1fr; gap: 32px; }
+    .zone-map { height: 200px; }
+
+    .cta { padding: 60px 20px; }
+    .cta h2 { font-size: 30px; letter-spacing: -1px; }
+
+    footer { padding: 28px 20px; flex-direction: column; gap: 16px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+
+    .form-row { grid-template-columns: 1fr; }
+    .modal { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#accueil" class="nav-logo">Martin<span>Plomberie</span></a>
+  <div class="nav-links" id="nav-links">
+    <a href="#accueil" class="nav-link">Accueil</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#pourquoi" class="nav-link">Réalisations</a>
+    <a href="#" class="nav-link open-modal">Contact</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
+    <span></span><span></span><span></span>
+  </button>
+  <button class="nav-cta open-modal">Devis gratuit</button>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────── -->
+<section class="hero" id="accueil">
+  <div class="hero-content">
+    <div class="hero-badge" id="hero-badge"></div>
+    <h1 id="hero-title"></h1>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="hero-actions">
+      <button class="btn-primary open-modal" id="hero-cta"></button>
+      <a href="#services" class="btn-ghost" id="hero-secondary"></a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-placeholder">
+      <svg viewBox="0 0 320 280" width="320" height="280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="80" width="240" height="24" rx="12" fill="#2e4a62"/>
+        <rect x="52" y="86" width="60" height="12" rx="6" fill="#e8a735" opacity="0.9"/>
+        <rect x="120" y="86" width="60" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="188" y="86" width="80" height="12" rx="6" fill="#3d5f7a"/>
+        <circle cx="160" cy="140" r="40" fill="none" stroke="#2e4a62" stroke-width="12"/>
+        <circle cx="160" cy="140" r="40" fill="none" stroke="#e8a735" stroke-width="4" stroke-dasharray="60 200" stroke-linecap="round"/>
+        <rect x="148" y="108" width="24" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="148" y="160" width="24" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="108" y="128" width="12" height="24" rx="6" fill="#3d5f7a"/>
+        <rect x="200" y="128" width="12" height="24" rx="6" fill="#e8a735" opacity="0.7"/>
+        <rect x="40" y="196" width="240" height="24" rx="12" fill="#2e4a62"/>
+        <rect x="52" y="202" width="120" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="200" y="202" width="68" height="12" rx="6" fill="#e8a735" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="hero-stats" id="stats-container"></div>
+  </div>
+</section>
+
+<!-- ── Services ─────────────────────────────────────────────── -->
+<section class="services" id="services">
+  <p class="section-label reveal">Ce que nous faisons</p>
+  <h2 class="section-title reveal">Nos prestations</h2>
+  <div class="services-grid" id="services-grid"></div>
+</section>
+
+<!-- ── Pourquoi nous ─────────────────────────────────────────── -->
+<section class="why" id="pourquoi">
+  <div class="why-content reveal-left">
+    <p class="section-label" style="color:#e8a735">Pourquoi nous choisir</p>
+    <h2>Un artisan de <em>confiance</em>,<br>proche de vous</h2>
+    <div class="why-list" id="why-list"></div>
+  </div>
+  <div class="why-testimonial reveal" id="testimonial-container"></div>
+</section>
+
+<!-- ── Zone ─────────────────────────────────────────────────── -->
+<section class="zone" id="zone">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="section-label">Zone d'intervention</p>
+      <h2 class="section-title">Nous intervenons dans toute la Loire</h2>
+      <div class="zone-tags" id="zone-tags"></div>
+    </div>
+    <div class="zone-map reveal" style="--reveal-delay: 0.15s">
+      <div class="zone-ripple"></div>
+      <div class="zone-ripple"></div>
+      <div class="map-pin"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────── -->
+<section class="cta" id="contact">
+  <h2 class="reveal" id="cta-title"></h2>
+  <p class="reveal" id="cta-sub"></p>
+  <button class="cta-btn open-modal reveal" id="cta-btn"></button>
+  <span class="cta-tel reveal" id="cta-tel"></span>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">Martin<span>Plomberie</span></div>
+  <div class="footer-links" id="footer-links"></div>
+  <div class="footer-copy" id="footer-copy"></div>
+</footer>
+
+<!-- ── Modal formulaire ──────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-label="Formulaire de contact">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Fermer">×</button>
+    <div id="form-container">
+      <h2 class="modal-title">Demander un devis gratuit</h2>
+      <p class="modal-sub">Réponse garantie sous 24h — sans engagement</p>
+      <form id="contact-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-prenom">Prénom *</label>
+            <input id="f-prenom" type="text" class="form-input" name="prenom" required placeholder="Jean">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-nom">Nom *</label>
+            <input id="f-nom" type="text" class="form-input" name="nom" required placeholder="Dupont">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-tel">Téléphone *</label>
+            <input id="f-tel" type="tel" class="form-input" name="tel" required placeholder="06 XX XX XX XX">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email">Email</label>
+            <input id="f-email" type="email" class="form-input" name="email" placeholder="jean@exemple.fr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-prestation">Type de prestation *</label>
+          <select id="f-prestation" class="form-select" name="prestation" required>
+            <option value="" disabled selected>Choisissez...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-message">Message</label>
+          <textarea id="f-message" class="form-textarea" name="message" placeholder="Décrivez votre besoin..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Envoyer ma demande</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  renderContent();
+  initMobileMenu();
+  initNavScroll();
+  initModal();
+  initReveal();
+  initActiveNav();
+  initTestimonialRotation();
+});
+
+/* ── Rendu depuis CONFIG ──────────────────────────────────────── */
+function renderContent() {
+  document.getElementById('hero-badge').textContent = CONFIG.company.badge;
+  document.getElementById('hero-title').innerHTML = CONFIG.hero.titleLines
+    .map((line, i) => i === CONFIG.hero.titleAccentIndex ? `<em>${line}</em>` : line)
+    .join('<br>');
+  document.getElementById('hero-sub').textContent = CONFIG.hero.subtitle;
+  document.getElementById('hero-cta').textContent = CONFIG.hero.ctaPrimary;
+  document.getElementById('hero-secondary').textContent = CONFIG.hero.ctaSecondary;
+
+  document.getElementById('stats-container').innerHTML = CONFIG.stats.map(s => `
+    <div class="stat-item">
+      <div class="stat-num"
+           data-target="${s.target}"
+           data-prefix="${s.prefix}"
+           data-suffix="${s.suffix}"
+           data-decimals="${s.decimals}">
+        ${s.prefix}0${s.suffix}
+      </div>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('services-grid').innerHTML = CONFIG.services.map((s, i) => `
+    <div class="service-card reveal" style="--reveal-delay:${i * 0.12}s; border-left-color:${s.accentColor}">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24">${s.iconPath}</svg>
+      </div>
+      <div class="service-name">${s.name}</div>
+      <p class="service-desc">${s.desc}</p>
+    </div>
+  `).join('');
+
+  document.getElementById('why-list').innerHTML = CONFIG.whyUs.map(w => `
+    <div class="why-item">
+      <div class="why-check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="why-text">
+        <strong>${w.title}</strong>
+        <p>${w.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  renderTestimonial(0);
+
+  document.getElementById('zone-tags').innerHTML =
+    CONFIG.zones.map(z => `<span class="zone-tag">${z}</span>`).join('');
+
+  document.getElementById('cta-title').textContent = CONFIG.cta.title;
+  document.getElementById('cta-sub').textContent = CONFIG.cta.subtitle;
+  document.getElementById('cta-btn').textContent = CONFIG.cta.btnText;
+  document.getElementById('cta-tel').innerHTML =
+    `ou appelez directement : <a href="${CONFIG.company.phoneHref}">${CONFIG.company.phone}</a>`;
+
+  document.getElementById('footer-links').innerHTML =
+    CONFIG.footer.links.map(l => `<a href="${l.href}">${l.label}</a>`).join('');
+  document.getElementById('footer-copy').textContent = CONFIG.footer.copyright;
+
+  const select = document.getElementById('f-prestation');
+  CONFIG.services.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.name;
+    opt.textContent = s.name;
+    select.appendChild(opt);
+  });
+  const other = document.createElement('option');
+  other.value = 'Autre';
+  other.textContent = 'Autre';
+  select.appendChild(other);
+}
+
+/* ── Témoignages ────────────────────────────────────────────── */
+let currentTestimonial = 0;
+let testimonialTimer = null;
+
+function renderTestimonial(index) {
+  const t = CONFIG.testimonials[index];
+  const container = document.getElementById('testimonial-container');
+  const dots = CONFIG.testimonials.length > 1
+    ? `<div class="testimonial-dots">${CONFIG.testimonials.map((_, i) =>
+        `<button class="t-dot ${i === index ? 'active' : ''}" data-index="${i}" aria-label="Avis ${i + 1}"></button>`
+      ).join('')}</div>`
+    : '';
+
+  container.innerHTML = `
+    <div class="stars">${'★'.repeat(t.rating)}</div>
+    <p class="testimonial-text">"${t.text}"</p>
+    <div class="testimonial-author">
+      <div class="author-avatar">${t.initials}</div>
+      <div>
+        <div class="author-name">${t.author}</div>
+        <div class="author-loc">${t.location}</div>
+      </div>
+    </div>
+    ${dots}
+  `;
+
+  container.querySelectorAll('.t-dot').forEach(btn => {
+    btn.addEventListener('click', () => {
+      clearInterval(testimonialTimer);
+      currentTestimonial = parseInt(btn.dataset.index);
+      switchTestimonial(currentTestimonial);
+      startTestimonialTimer();
+    });
+  });
+}
+
+function switchTestimonial(index) {
+  const container = document.getElementById('testimonial-container');
+  container.classList.add('fading');
+  setTimeout(() => {
+    renderTestimonial(index);
+    container.classList.remove('fading');
+  }, 400);
+}
+
+function startTestimonialTimer() {
+  if (CONFIG.testimonials.length <= 1) return;
+  testimonialTimer = setInterval(() => {
+    currentTestimonial = (currentTestimonial + 1) % CONFIG.testimonials.length;
+    switchTestimonial(currentTestimonial);
+  }, 6000);
+}
+
+function initTestimonialRotation() { startTestimonialTimer(); }
+
+/* ── Menu mobile ─────────────────────────────────────────────── */
+function initMobileMenu() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('nav-links');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+}
+
+/* ── Ombre nav au scroll ─────────────────────────────────────── */
+function initNavScroll() {
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+}
+
+/* ── Modal ───────────────────────────────────────────────────── */
+function openModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function initModal() {
+  const overlay = document.getElementById('modal-overlay');
+
+  document.querySelectorAll('.open-modal').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('hamburger').classList.remove('open');
+      document.getElementById('nav-links').classList.remove('open');
+      openModal();
+    });
+  });
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  document.getElementById('contact-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Envoi en cours…';
+    btn.disabled = true;
+
+    // TODO : remplacez ce setTimeout par un vrai appel fetch vers votre API ou Formspree.
+    setTimeout(() => {
+      document.getElementById('form-container').innerHTML = `
+        <div class="form-success">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <h3>Demande envoyée !</h3>
+          <p>Nous vous recontacterons dans les 24h.</p>
+        </div>
+      `;
+    }, 900);
+  });
+}
+
+/* ── Animations au scroll ────────────────────────────────────── */
+function initReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .reveal-left').forEach(el => observer.observe(el));
+
+  const stats = document.getElementById('stats-container');
+  if (stats) {
+    const statsObs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) { animateCounters(); statsObs.disconnect(); }
+    }, { threshold: 0.6 });
+    statsObs.observe(stats);
+  }
+}
+
+/* ── Compteurs animés ─────────────────────────────────────────── */
+function animateCounters() {
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target   = parseFloat(el.dataset.target);
+    const prefix   = el.dataset.prefix  || '';
+    const suffix   = el.dataset.suffix  || '';
+    const decimals = parseInt(el.dataset.decimals) || 0;
+    const duration = 1400;
+    const startTime = performance.now();
+
+    function tick(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + (target * eased).toFixed(decimals) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ── Lien nav actif selon section visible ─────────────────────── */
+function initActiveNav() {
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+}
+</script>
+</body>
+</html>
