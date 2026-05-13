@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin Plomberie — Plombier à Saint-Étienne</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #f5f3ee; color: #1a1a1a; }
+
+  nav { background: #1a2a3a; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: #fff; letter-spacing: -0.5px; }
+  .nav-logo span { color: #e8a735; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta { background: #e8a735; color: #1a2a3a; padding: 10px 22px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; font-family: 'Syne', sans-serif; }
+
+  .hero { background: #1a2a3a; padding: 80px 40px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; min-height: 460px; overflow: hidden; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,167,53,0.15); border: 1px solid rgba(232,167,53,0.35); color: #e8a735; font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 2px; margin-bottom: 24px; letter-spacing: 0.8px; text-transform: uppercase; }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: #e8a735; border-radius: 50%; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: 52px; font-weight: 800; color: #fff; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+  .hero h1 em { color: #e8a735; font-style: normal; }
+  .hero-sub { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.7; max-width: 420px; margin-bottom: 36px; font-weight: 300; }
+  .hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .btn-primary { background: #e8a735; color: #1a2a3a; padding: 14px 28px; border-radius: 4px; font-weight: 600; font-size: 15px; text-decoration: none; font-family: 'Syne', sans-serif; }
+  .btn-ghost { color: rgba(255,255,255,0.75); font-size: 14px; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+  .btn-ghost::after { content: '→'; }
+  .hero-visual { position: relative; align-self: end; }
+  .hero-img-placeholder { width: 100%; height: 340px; background: linear-gradient(135deg, #243a4e 0%, #1a2a3a 100%); border-radius: 8px 8px 0 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hero-stats { display: flex; gap: 0; }
+  .stat-item { flex: 1; background: rgba(255,255,255,0.05); border-top: 2px solid #e8a735; padding: 16px 20px; }
+  .stat-item:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.08); }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: #fff; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  .services { padding: 80px 40px; background: #f5f3ee; }
+  .section-label { font-size: 12px; font-weight: 500; color: #e8a735; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: #1a2a3a; letter-spacing: -1px; margin-bottom: 48px; max-width: 400px; line-height: 1.1; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .service-card { background: #fff; border-radius: 8px; padding: 32px 28px; border-left: 4px solid #1a2a3a; position: relative; overflow: hidden; }
+  .service-card::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: #f5f3ee; border-radius: 0 8px 0 100%; }
+  .service-icon { width: 48px; height: 48px; background: #1a2a3a; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .service-icon svg { width: 24px; height: 24px; stroke: #e8a735; fill: none; stroke-width: 1.8; }
+  .service-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: #1a2a3a; margin-bottom: 10px; }
+  .service-desc { font-size: 14px; color: #666; line-height: 1.65; font-weight: 300; }
+  .service-card:nth-child(2) { border-left-color: #e8a735; }
+  .service-card:nth-child(3) { border-left-color: #2e7d62; }
+
+  .why { background: #1a2a3a; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .why h2 { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 32px; }
+  .why h2 em { color: #e8a735; font-style: normal; }
+  .why-list { display: flex; flex-direction: column; gap: 20px; }
+  .why-item { display: flex; gap: 16px; align-items: flex-start; }
+  .why-check { width: 32px; height: 32px; min-width: 32px; background: rgba(232,167,53,0.15); border: 1px solid rgba(232,167,53,0.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .why-check svg { width: 16px; height: 16px; stroke: #e8a735; fill: none; stroke-width: 2.5; }
+  .why-text strong { display: block; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .why-text p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; font-weight: 300; }
+  .why-testimonial { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 36px; }
+  .stars { color: #e8a735; font-size: 18px; margin-bottom: 20px; letter-spacing: 2px; }
+  .testimonial-text { font-size: 17px; color: rgba(255,255,255,0.85); line-height: 1.7; font-style: italic; font-weight: 300; margin-bottom: 24px; }
+  .testimonial-author { display: flex; align-items: center; gap: 14px; }
+  .author-avatar { width: 44px; height: 44px; border-radius: 50%; background: #e8a735; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: #1a2a3a; }
+  .author-name { font-weight: 600; font-size: 14px; color: #fff; }
+  .author-loc { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+  .zone { padding: 80px 40px; background: #f5f3ee; }
+  .zone-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .zone-map { background: #e8e5de; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .map-pin { width: 40px; height: 40px; background: #1a2a3a; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; z-index: 1; }
+  .map-pin::after { content: ''; width: 16px; height: 16px; background: #e8a735; border-radius: 50%; transform: rotate(45deg); }
+  .zone-ripple { position: absolute; border: 2px solid rgba(26,42,58,0.2); border-radius: 50%; }
+  .zone-ripple:nth-child(1) { width: 160px; height: 160px; }
+  .zone-ripple:nth-child(2) { width: 240px; height: 240px; border-color: rgba(26,42,58,0.1); }
+  .zone-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .zone-tag { background: #fff; border: 1px solid #ddd; border-radius: 2px; padding: 6px 14px; font-size: 13px; color: #444; font-weight: 400; }
+
+  .cta { background: #e8a735; padding: 80px 40px; text-align: center; }
+  .cta h2 { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800; color: #1a2a3a; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .cta p { font-size: 16px; color: rgba(26,42,58,0.7); margin-bottom: 36px; font-weight: 300; }
+  .cta-btn { background: #1a2a3a; color: #fff; padding: 16px 36px; border-radius: 4px; font-weight: 700; font-size: 16px; text-decoration: none; font-family: 'Syne', sans-serif; display: inline-block; }
+  .cta-tel { display: block; margin-top: 16px; font-size: 14px; color: rgba(26,42,58,0.6); }
+
+  footer { background: #0f1c28; padding: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: #fff; }
+  .footer-logo span { color: #e8a735; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Martin<span>Plomberie</span></div>
+  <div class="nav-links">
+    <a href="#">Accueil</a>
+    <a href="#">Services</a>
+    <a href="#">Réalisations</a>
+    <a href="#">Contact</a>
+  </div>
+  <a href="#" class="nav-cta">Devis gratuit</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Artisan certifié RGE</div>
+    <h1>Plombier à<br><em>Saint-Étienne</em><br>& alentours</h1>
+    <p class="hero-sub">Dépannage, installation et rénovation. Intervention rapide 7j/7 — devis gratuit sous 24h.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Demander un devis</a>
+      <a href="#" class="btn-ghost">Voir nos services</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-placeholder">
+      <svg viewBox="0 0 320 280" width="320" height="280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="80" width="240" height="24" rx="12" fill="#2e4a62"/>
+        <rect x="52" y="86" width="60" height="12" rx="6" fill="#e8a735" opacity="0.9"/>
+        <rect x="120" y="86" width="60" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="188" y="86" width="80" height="12" rx="6" fill="#3d5f7a"/>
+        <circle cx="160" cy="140" r="40" fill="none" stroke="#2e4a62" stroke-width="12"/>
+        <circle cx="160" cy="140" r="40" fill="none" stroke="#e8a735" stroke-width="4" stroke-dasharray="60 200" stroke-linecap="round"/>
+        <rect x="148" y="108" width="24" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="148" y="160" width="24" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="108" y="128" width="12" height="24" rx="6" fill="#3d5f7a"/>
+        <rect x="200" y="128" width="12" height="24" rx="6" fill="#e8a735" opacity="0.7"/>
+        <rect x="40" y="196" width="240" height="24" rx="12" fill="#2e4a62"/>
+        <rect x="52" y="202" width="120" height="12" rx="6" fill="#3d5f7a"/>
+        <rect x="200" y="202" width="68" height="12" rx="6" fill="#e8a735" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">+350</div>
+        <div class="stat-label">Clients satisfaits</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12 ans</div>
+        <div class="stat-label">D'expérience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4.9/5</div>
+        <div class="stat-label">Note Google</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <p class="section-label">Ce que nous faisons</p>
+  <h2 class="section-title">Nos prestations</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="service-name">Dépannage urgent</div>
+      <p class="service-desc">Fuite, canalisation bouchée, robinet cassé — intervention en moins de 2h dans la Loire.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div class="service-name">Rénovation salle de bain</div>
+      <p class="service-desc">Pose de douche, baignoire, vasque. Remplacement complet de la plomberie sur devis.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 015 5v3H7V7a5 5 0 015-5zM7 10h10l1 11H6L7 10z"/></svg>
+      </div>
+      <div class="service-name">Chauffe-eau & sanitaire</div>
+      <p class="service-desc">Installation et entretien de chauffe-eau, VMC, systèmes de chauffage au sol.</p>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="why-content">
+    <p class="section-label" style="color:#e8a735">Pourquoi nous choisir</p>
+    <h2>Un artisan de <em>confiance</em>, proche de vous</h2>
+    <div class="why-list">
+      <div class="why-item">
+        <div class="why-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="why-text">
+          <strong>Disponible 7j/7</strong>
+          <p>Urgences ou rendez-vous planifiés, nous nous adaptons à votre emploi du temps.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="why-text">
+          <strong>Devis gratuit et transparent</strong>
+          <p>Aucune surprise sur la facture. Le prix annoncé est le prix final.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="why-text">
+          <strong>Certifié et assuré</strong>
+          <p>Garantie décennale, assurance RC pro — votre logement est entre de bonnes mains.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="why-testimonial">
+    <div class="stars">★★★★★</div>
+    <p class="testimonial-text">"Intervention rapide le dimanche soir pour une fuite sous l'évier. Professionnel, propre et honnête sur le prix. Je recommande sans hésiter."</p>
+    <div class="testimonial-author">
+      <div class="author-avatar">MD</div>
+      <div>
+        <div class="author-name">Marie Dupont</div>
+        <div class="author-loc">Saint-Étienne, Loire</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="zone">
+  <div class="zone-inner">
+    <div>
+      <p class="section-label">Zone d'intervention</p>
+      <h2 class="section-title">Nous intervenons dans toute la Loire</h2>
+      <div class="zone-tags">
+        <span class="zone-tag">Saint-Étienne</span>
+        <span class="zone-tag">Firminy</span>
+        <span class="zone-tag">Saint-Chamond</span>
+        <span class="zone-tag">Rive-de-Gier</span>
+        <span class="zone-tag">Montbrison</span>
+        <span class="zone-tag">Andrézieux</span>
+        <span class="zone-tag">Le Chambon</span>
+      </div>
+    </div>
+    <div class="zone-map">
+      <div class="zone-ripple"></div>
+      <div class="zone-ripple"></div>
+      <div class="map-pin"></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Besoin d'un plombier ?</h2>
+  <p>Devis gratuit — Réponse sous 24h — Intervention rapide</p>
+  <a href="#" class="cta-btn">Nous contacter</a>
+  <span class="cta-tel">ou appelez directement : 04 77 XX XX XX</span>
+</section>
+
+<footer>
+  <div class="footer-logo">Martin<span>Plomberie</span></div>
+  <div class="footer-links">
+    <a href="#">Mentions légales</a>
+    <a href="#">CGV</a>
+    <a href="#">Politique de confidentialité</a>
+  </div>
+  <div class="footer-copy">© 2025 Martin Plomberie</div>
+</footer>
+
+</body>
+</html>
